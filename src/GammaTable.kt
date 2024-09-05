@@ -1,3 +1,65 @@
+//#region types
+
+// Threshold for a 'full' pixel: pixels with alpha above this level are
+// considered opaque This is the decimal value for 0xFFF0 / 0xFFFF
+const val RE_FULL_COLOUR_FLOAT = 0.9998f
+// Threshold for an 'empty' pixel: pixels with alpha above this level are
+// considered completely transparent. This is the decimal value
+// for 0x000F / 0xFFFF
+const val RE_EMPTY_COLOUR_FLOAT = 0.0002f
+// A 100% pixel. Sometimes, seems to be too little.... Hm.......
+const val RE_UNITY_COLOUR_FLOAT = 1.0f
+// A 0% pixel. I wonder how 0 the 0.0 is...
+const val RE_ZERO_COLOUR_FLOAT = 0.0f
+
+// threshold for alpha
+const val RE_FULL_ALPHA_FLOAT = 0.9998f
+
+// Same set of defines for shorts
+const val RE_FULL_COLOUR_SHORT = 0xFFF0
+const val RE_EMPTY_COLOUR_SHORT = 0x0000
+
+// Default gamma. For most CRTs, gamma ranges from 2.2 to 2.5 (Foley), so
+// 2.35 seems appropriate enough. Experience teaches a different number
+// though. Old blender: 2.0. It  might be nice to make this a slider
+const val RE_DEFAULT_GAMMA = 2.0f
+
+// This 400 is sort of based on the number of intensity levels needed for
+// the typical dynamic range of a medium, in this case CRTs. (Foley)
+// (Actually, it says the number should be between 400 and 535.)
+const val RE_GAMMA_TABLE_SIZE = 400
+
+var RE_FLOAT_COLOUR_CLIPPING = false
+var RE_ALPHA_CLIPPING = false
+
+inline fun tryClipFCol (flag: Boolean, c: Float) =
+	if (flag && c >= RE_FULL_COLOUR_FLOAT)
+		RE_UNITY_COLOUR_FLOAT
+	else c
+
+class FloatCol (
+	var r:Float,
+	var g:Float,
+	var b:Float,
+	var a:Float,
+)
+
+class ShortCol (
+	var r:UShort,
+	var g:UShort,
+	var b:UShort,
+	var a:UShort,
+)
+
+class ByteCol (
+	var r:UByte,
+	var g:UByte,
+	var b:UByte,
+	var a:UByte,
+)
+
+
+//#endregion
 
 
 /**
@@ -23,25 +85,72 @@ fun addToSampCol(sampcol:UShortArray, shortcol:UShortArray, mask:Int, osaNr:Int)
 /**
  * Halo-add pixel, bring your own R.osa setting, and add factor
  */
-fun addAddSampColF (s:FloatArray, d:FloatArray, m:Int, osa:Int, add:UByte)
+fun addAddSampColF (
+	sampvec:Array<FloatCol>,
+	source:Array<FloatCol>,
+	mask:Int,
+	osaNr:Int,
+	addfac:UByte)
 {
+	var a = 0
+	var i = 0
+	while (a < osaNr)
+	{
+		if ((mask and (1 shl a)) != 0)
+			addalphaAddfacFloat(sampvec[i], source[i], addfac)
+		i++
+		a++
+	}
 }
 
 
 /**
  * Alpha undersamples pixel, bring your own R.osa setting
  */
-fun addUnderSampColF (sampcol:FloatArray, dest:FloatArray, mask:Int, osaNr:Int):Int
+fun addUnderSampColF (
+	sampvec:Array<FloatCol>,
+	source:Array<FloatCol>,
+	mask:Int,
+	osaNr:Int,
+):Int
 {
-	TODO()
-}
+	var retval = osaNr
 
+	var a = 0
+	var i = 0
+	while (a < osaNr)
+	{
+		val sa = sampvec[i]
+		if ((mask and (1 shl a)) != 0)
+			addAlphaUnderFloat(sa, source[i])
+		if (sa.a > RE_FULL_COLOUR_FLOAT)
+			retval--
+		a++
+		i++
+	}
+
+	return retval
+}
 
 /**
  * Alpha oversample pixel, bring your own R.osa setting
  */
-fun addOverSampColF(sampcol:FloatArray, dest:FloatArray, mask:Int, osaNr:Int)
+fun addOverSampColF (
+	sampvec:Array<FloatCol>,
+	source:Array<FloatCol>,
+	mask:Int,
+	osaNr:Int)
 {
+
+	var a = 0
+	var i = 0
+	while (a < osaNr)
+	{
+		if ((mask and (1 shl a)) != 0)
+			addAlphaOverFloat(sampvec[i], source[i])
+		a++
+		i++
+	}
 }
 
 /**
@@ -50,6 +159,7 @@ fun addOverSampColF(sampcol:FloatArray, dest:FloatArray, mask:Int, osaNr:Int)
  */
 fun sampleFloatColV2FloatColV(sample:FloatArray, dest:FloatArray, osaNr:Int)
 {
+	TODO()
 }
 
 /**
@@ -58,41 +168,82 @@ fun sampleFloatColV2FloatColV(sample:FloatArray, dest:FloatArray, osaNr:Int)
  */
 fun sampleShortColV2ShortColV(sample:UShortArray, dest:UShortArray, osaNr:Int)
 {
+	TODO()
 }
 
 /**
  * Take colour <bron>, and apply it to <doel> using the alpha value of
  * <bron>.
- * @param doel
- * @param bron
  */
 fun addAlphaOverShort (doel:UShortArray, bron:UShortArray)
 {
+	TODO()
 }
 
 /**
  * Take colour <bron>, and apply it to <doel> using the alpha value of
  * <doel>.
- * @param doel
- * @param bron
  */
 fun addAlphaUnderShort(doel:UShortArray, bron:UShortArray)
 {
+	TODO()
 }
 
 
 /**
  * Alpha-over blending for floats.
  */
-fun addAlphaOverFloat(dest:FloatArray, source:FloatArray)
+fun addAlphaOverFloat (dest:FloatCol, source:FloatCol)
 {
+	/* d = s + (1-alpha_s)d*/
+
+	/* I may want to disable this clipping */
+	if (RE_FLOAT_COLOUR_CLIPPING)
+	{
+		if (source.a > RE_FULL_COLOUR_FLOAT)
+		{
+			// is getest, scheelt veel
+			dest.r = source.r
+			dest.g = source.g
+			dest.b = source.b
+			dest.a = source.a
+			return
+		}
+	}
+
+	val mul = 1 - source.a
+
+	dest.r = tryClipFCol(RE_FLOAT_COLOUR_CLIPPING, (mul * dest.r) + source.r)
+	dest.g = tryClipFCol(RE_FLOAT_COLOUR_CLIPPING, (mul * dest.g) + source.g)
+	dest.b = tryClipFCol(RE_FLOAT_COLOUR_CLIPPING, (mul * dest.b) + source.b)
+	dest.a = tryClipFCol(RE_ALPHA_CLIPPING, (mul * dest.a) + source.a)
 }
 
 /**
  * Alpha-under blending for floats.
  */
-fun addAlphaUnderFloat(dest:FloatArray, source:FloatArray)
+fun addAlphaUnderFloat(dest:FloatCol, source:FloatCol)
 {
+	/* I may want to disable this clipping */
+	if (RE_FLOAT_COLOUR_CLIPPING)
+	{
+		if (dest.a >= RE_FULL_COLOUR_FLOAT)
+			return
+		if (-RE_EMPTY_COLOUR_FLOAT < dest.a && dest.a < RE_EMPTY_COLOUR_FLOAT)
+		{   /* is getest, scheelt veel */
+			dest.r = source.r
+			dest.g = source.g
+			dest.b = source.b
+			dest.a = source.a
+			return
+		}
+
+	}
+	val mul = 1 - dest.a
+	dest.r = tryClipFCol(RE_FLOAT_COLOUR_CLIPPING, (mul * source.r) + dest.r)
+	dest.g = tryClipFCol(RE_FLOAT_COLOUR_CLIPPING, (mul * source.g) + dest.g)
+	dest.b = tryClipFCol(RE_FLOAT_COLOUR_CLIPPING, (mul * source.b) + dest.b)
+	dest.a = tryClipFCol(RE_ALPHA_CLIPPING, (mul * source.a) + dest.a)
 }
 
 
@@ -101,6 +252,7 @@ fun addAlphaUnderFloat(dest:FloatArray, source:FloatArray)
  */
 fun cpShortColV2CharColV(source:UShortArray, dest:UByteArray)
 {
+	TODO()
 }
 
 /**
@@ -108,6 +260,7 @@ fun cpShortColV2CharColV(source:UShortArray, dest:UByteArray)
  */
 fun cpCharColV2ShortColV(source:UByteArray, dest:UShortArray)
 {
+	TODO()
 }
 
 /**
@@ -115,6 +268,7 @@ fun cpCharColV2ShortColV(source:UByteArray, dest:UShortArray)
  */
 fun cpIntColV2CharColV(source:UIntArray, dest:UByteArray)
 {
+	TODO()
 }
 
 /**
@@ -123,6 +277,7 @@ fun cpIntColV2CharColV(source:UIntArray, dest:UByteArray)
  */
 fun cpFloatColV2CharColV (source:FloatArray, dest:UByteArray)
 {
+	TODO()
 }
 
 /**
@@ -130,6 +285,7 @@ fun cpFloatColV2CharColV (source:FloatArray, dest:UByteArray)
  */
 fun cpCharColV2FloatColV (source:UByteArray, dest:FloatArray)
 {
+	TODO()
 }
 
 /**
@@ -137,6 +293,7 @@ fun cpCharColV2FloatColV (source:UByteArray, dest:FloatArray)
  */
 fun cpShortColV2FloatColV (source:UShortArray, dest:FloatArray)
 {
+	TODO()
 }
 
 /**
@@ -144,6 +301,7 @@ fun cpShortColV2FloatColV (source:UShortArray, dest:FloatArray)
  */
 fun cpFloatColV(source:FloatArray, dest:FloatArray)
 {
+	TODO()
 }
 
 
@@ -152,6 +310,7 @@ fun cpFloatColV(source:FloatArray, dest:FloatArray)
  */
 fun cpShortColV(source:UShortArray, dest:UShortArray)
 {
+	TODO()
 }
 
 /**
@@ -159,6 +318,7 @@ fun cpShortColV(source:UShortArray, dest:UShortArray)
  */
 fun cpCharColV (source:UByteArray, dest:UByteArray)
 {
+	TODO()
 }
 
 /**
@@ -175,11 +335,53 @@ fun addalphaAddfacShort(dest:UShortArray, source:UShortArray, addfac:UByte)
 
 
 /**
- * Same for floats
- */
-fun addalphaAddfacFloat(dest:FloatArray, source:FloatArray, addfac:UByte)
+	Same for floats
+*/
+fun addalphaAddfacFloat(dest:FloatCol, source:FloatCol, addfac:UByte)
 {
-	TODO()
+	var c = 0f // intermediate colour
+
+	// 1. copy source straight away if dest has zero alpha
+	// 2. copy dest straight away if dest has full alpha
+	// I am not sure whether (2) is correct. It seems to
+	// me that this should not happen if float colours
+	// aren't clipped at 1.0 .
+	// I'll keep the code, but disabled....
+	if (dest.a < RE_EMPTY_COLOUR_FLOAT)
+	{
+		dest.r = source.r
+		dest.g = source.g
+		dest.b = source.b
+		dest.a = source.a
+		return
+	}
+
+	// Addfac is a number between 0 and 1: rescale
+	// final target is to diminish the influence of dest when addfac rises
+	// weiging factor of destination
+	val m = 1 - (source.a * ((255f - addfac.toFloat()) / 255f))
+
+	// blend colours
+	c = (m * dest.r) + source.r
+	dest.r = if (RE_FLOAT_COLOUR_CLIPPING && c >= RE_FULL_COLOUR_FLOAT)
+		RE_FULL_COLOUR_FLOAT
+	else c
+
+	c = (m * dest.g) + source.g
+	dest.g = if (RE_FLOAT_COLOUR_CLIPPING && c >= RE_FULL_COLOUR_FLOAT)
+		RE_FULL_COLOUR_FLOAT
+		else c
+
+	c = (m * dest.b) + source.b
+	dest.b = if (RE_FLOAT_COLOUR_CLIPPING && c >= RE_FULL_COLOUR_FLOAT)
+		RE_FULL_COLOUR_FLOAT
+		else c
+
+	c = dest.a + source.a
+	dest.a = if (RE_ALPHA_CLIPPING && c >= RE_FULL_COLOUR_FLOAT)
+		RE_FULL_COLOUR_FLOAT
+		else c
+
 }
 
 /**
