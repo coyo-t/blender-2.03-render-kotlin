@@ -1,10 +1,10 @@
 package bl
 
 import bl.material.Material
-import bl.maths.Vec3
-import bl.maths.f4array
-import bl.maths.mat3x3f
-import bl.maths.mat4x4f
+import common.maths.Vec3
+import common.maths.f4array
+import common.maths.mat3x3f
+import common.maths.mat4x4f
 import bl.vlakren.VlakRen
 
 class Render

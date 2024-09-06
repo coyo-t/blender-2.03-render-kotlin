@@ -2,7 +2,7 @@ package bl.vlakren
 
 import bl.*
 import bl.material.Material
-import bl.maths.Vec3
+import common.maths.Vec3
 import java.util.*
 import kotlin.math.absoluteValue
 

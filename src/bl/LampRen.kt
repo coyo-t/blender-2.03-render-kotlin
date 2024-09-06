@@ -1,7 +1,7 @@
 package bl
 
-import bl.maths.Matrix3
-import bl.maths.Vec3
+import common.maths.Matrix3
+import common.maths.Vec3
 
 class LampRen
 {
@@ -12,7 +12,7 @@ class LampRen
 
 	val co = Vec3()
 	var type = 0
-	var mode = 0
+	val mode = LampMode()
 	var r = 0f
 	var g = 0f
 	var b = 0f

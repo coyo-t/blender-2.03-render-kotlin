@@ -1,4 +1,4 @@
-package bl.maths
+package common.maths
 
 import kotlin.math.absoluteValue
 import kotlin.math.sqrt
@@ -53,7 +53,7 @@ class Matrix4
 
 
 /** copy from m1 to m2 */
-fun MTC_Mat4CpyMat4 (from:Matrix4, to:Matrix4)
+fun MTC_Mat4CpyMat4 (from: Matrix4, to: Matrix4)
 {
 	for (i in 0..3)
 	{
@@ -61,7 +61,7 @@ fun MTC_Mat4CpyMat4 (from:Matrix4, to:Matrix4)
 	}
 }
 
-fun MTC_Mat4MulMat4 (m1:Matrix4, m2:Matrix4, m3:Matrix4)
+fun MTC_Mat4MulMat4 (m1: Matrix4, m2: Matrix4, m3: Matrix4)
 {
 	// matrix product: c[j][k] = a[j][i].b[i][k]
 
@@ -87,7 +87,7 @@ fun MTC_Mat4MulMat4 (m1:Matrix4, m2:Matrix4, m3:Matrix4)
 
 }
 
-fun MTC_Mat4MulVecfl (mat:Matrix4, vec:Vec3)
+fun MTC_Mat4MulVecfl (mat: Matrix4, vec: Vec3)
 {
 	val x = vec.x
 	val y = vec.y
@@ -97,7 +97,7 @@ fun MTC_Mat4MulVecfl (mat:Matrix4, vec:Vec3)
 	vec.z=x*mat[0][2] + y*mat[1][2] + mat[2][2]*z + mat[3][2]
 }
 
-fun MTC_Mat3MulVecfl (mat:Matrix3, vec:Vec3)
+fun MTC_Mat3MulVecfl (mat: Matrix3, vec: Vec3)
 {
 	val x=vec.x
 	val y=vec.y
@@ -107,7 +107,7 @@ fun MTC_Mat3MulVecfl (mat:Matrix3, vec:Vec3)
 	vec[2]= x*mat[0][2] + y*mat[1][2] + mat[2][2]*z
 }
 
-fun MTC_Mat4Invert (inverse:Matrix4, mat:Matrix4):Boolean
+fun MTC_Mat4Invert (inverse: Matrix4, mat: Matrix4):Boolean
 {
 	inverse.setIdentity()
 
@@ -163,7 +163,7 @@ fun MTC_Mat4Invert (inverse:Matrix4, mat:Matrix4):Boolean
 	return true
 }
 
-fun MTC_Mat3CpyMat4 (m1:Matrix3, m2:Matrix4)
+fun MTC_Mat3CpyMat4 (m1: Matrix3, m2: Matrix4)
 {
 
 	m1[0][0]= m2[0][0]
@@ -179,7 +179,7 @@ fun MTC_Mat3CpyMat4 (m1:Matrix3, m2:Matrix4)
 	m1[2][2]= m2[2][2]
 }
 
-fun MTC_Mat3CpyMat3 (from:Matrix3, to:Matrix3)
+fun MTC_Mat3CpyMat3 (from: Matrix3, to: Matrix3)
 {
 	for (i in 0..2)
 	{
@@ -187,7 +187,7 @@ fun MTC_Mat3CpyMat3 (from:Matrix3, to:Matrix3)
 	}
 }
 
-fun MTC_Mat3MulMat3 (m1:Matrix3, m3:Matrix3, m2:Matrix3)
+fun MTC_Mat3MulMat3 (m1: Matrix3, m3: Matrix3, m2: Matrix3)
 {
 	/* be careful about this rewrite... */
 	    /* m1[i][j] = m2[i][k]*m3[k][j], args are flipped! */
@@ -205,7 +205,7 @@ fun MTC_Mat3MulMat3 (m1:Matrix3, m3:Matrix3, m2:Matrix3)
 
 }
 
-fun MTC_Mat4Ortho (mat:Matrix4)
+fun MTC_Mat4Ortho (mat: Matrix4)
 {
 	fun Normalise (n:FloatArray):Float
 	{
@@ -239,7 +239,7 @@ fun MTC_Mat4Ortho (mat:Matrix4)
 	if(len!=0f) mat[2][3]/= len
 }
 
-fun MTC_Mat4Mul3Vecfl (mat:Matrix4, vec:Vec3)
+fun MTC_Mat4Mul3Vecfl (mat: Matrix4, vec: Vec3)
 {
 	/* vec = mat^T dot vec !!! or vec a row, then vec = vec dot mat*/
 
@@ -251,12 +251,12 @@ fun MTC_Mat4Mul3Vecfl (mat:Matrix4, vec:Vec3)
 	vec.z= x*mat[0][2] + y*mat[1][2] + mat[2][2]*z
 }
 
-fun MTC_Mat4One (mat:Matrix4)
+fun MTC_Mat4One (mat: Matrix4)
 {
 	mat.setIdentity()
 }
 
-fun MTC_Mat3Inv (m1:Matrix3, m2:Matrix3)
+fun MTC_Mat3Inv (m1: Matrix3, m2: Matrix3)
 {
 	/* eerst adjoint */
 	MTC_Mat3Adj(m1,m2)
@@ -279,7 +279,7 @@ fun MTC_Mat3Inv (m1:Matrix3, m2:Matrix3)
 	}
 }
 
-fun MTC_Mat3Adj (m1:Matrix3, m:Matrix3)
+fun MTC_Mat3Adj (m1: Matrix3, m: Matrix3)
 {
 	m1[0][0]=m[1][1]*m[2][2]-m[1][2]*m[2][1];
 	m1[0][1]= -m[0][1]*m[2][2]+m[0][2]*m[2][1];
@@ -294,7 +294,7 @@ fun MTC_Mat3Adj (m1:Matrix3, m:Matrix3)
 	m1[2][2]=m[0][0]*m[1][1]-m[0][1]*m[1][0];
 }
 
-fun MTC_Mat3One (m:Matrix3)
+fun MTC_Mat3One (m: Matrix3)
 {
 	m.setIdentity()
 }

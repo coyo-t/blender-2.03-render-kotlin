@@ -1,6 +1,6 @@
 package bl
 
-import bl.maths.rctf
+import common.maths.rctf
 import java.util.*
 
 class RenderData
@@ -80,5 +80,5 @@ class RenderData
 	var ftype = ""
 	var movie = ""
 
-
+	val partCount get() = xparts * yparts
 }

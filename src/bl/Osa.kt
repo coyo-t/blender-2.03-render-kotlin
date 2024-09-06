@@ -1,6 +1,6 @@
 package bl
 
-import bl.maths.Vec3
+import common.maths.Vec3
 
 class Osa
 {

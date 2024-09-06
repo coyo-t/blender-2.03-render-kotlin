@@ -1,7 +1,7 @@
 package bl
 
-import bl.maths.Matrix4
-import bl.maths.Vec3
+import common.maths.Matrix4
+import common.maths.Vec3
 
 class ShadBuf
 {
