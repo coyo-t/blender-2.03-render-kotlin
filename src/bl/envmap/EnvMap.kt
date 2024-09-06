@@ -1,16 +1,6 @@
-enum class EnvType
-{
-	Cube,
-	Plane,
-	Sphere,
-}
+package bl.envmap
 
-enum class EnvSType
-{
-	Static,
-	Anim,
-	Load,
-}
+import bl.mat4x4f
 
 class EnvMap {
 	var `object`: Any? = null

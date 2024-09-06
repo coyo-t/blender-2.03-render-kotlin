@@ -1,14 +1,8 @@
-import java.util.EnumSet
-import kotlin.math.absoluteValue
+package bl.vlakren
 
-enum class VlakRenFlag
-{
-	Smooth,
-	Visible,
-	NoPointNormalFlip,
-	CMapCode,
-	FaceSplit
-}
+import bl.*
+import java.util.*
+import kotlin.math.absoluteValue
 
 class VlakRen
 {
@@ -32,7 +26,8 @@ class VlakRen
 	{
 		if (flag.contains(VlakRenFlag.NoPointNormalFlip))
 		{
-			//* render normaal flippen, wel niet zo netjes, maar anders dan moet de render() ook over... */
+			// render normaal flippen, wel niet zo netjes, maar anders
+			// dan moet de render() ook over...
 			n.x = -n.x
 			n.y = -n.y
 			n.z = -n.z

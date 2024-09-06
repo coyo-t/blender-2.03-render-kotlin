@@ -1,8 +1,9 @@
+package bl
 
 class RE
 {
 
-	var activeCamera:Camera? = null
+	var activeCamera: Camera? = null
 
 	fun initRender ()
 	{
@@ -39,7 +40,7 @@ class RE
 			return
 		}
 
-		
+
 	}
 
 	fun initFilterMask ()

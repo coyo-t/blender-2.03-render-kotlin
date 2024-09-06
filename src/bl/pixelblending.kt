@@ -1,3 +1,5 @@
+package bl
+
 import kotlin.math.floor
 import kotlin.math.min
 
@@ -36,7 +38,7 @@ const val RE_GAMMA_TABLE_SIZE = 400
 var RE_FLOAT_COLOUR_CLIPPING = false
 var RE_ALPHA_CLIPPING = false
 
-private inline fun tryClipFCol (flag: Boolean, c: Float, maxv:Float=RE_FULL_COLOUR_FLOAT) =
+private inline fun tryClipFCol (flag: Boolean, c: Float, maxv:Float= RE_FULL_COLOUR_FLOAT) =
 	if (flag && c >= RE_FULL_COLOUR_FLOAT) maxv
 	else c
 
@@ -47,7 +49,7 @@ class FloatCol (
 	var a:Float,
 )
 {
-	fun copyTo (dst:FloatCol)
+	fun copyTo (dst: FloatCol)
 	{
 		dst.r = r
 		dst.g = g
@@ -70,7 +72,7 @@ class ShortCol (
 	var a:UShort,
 )
 {
-	fun copyTo (dst:ShortCol)
+	fun copyTo (dst: ShortCol)
 	{
 		dst.r = r
 		dst.g = g
@@ -86,7 +88,7 @@ class ByteCol (
 	var a:UByte,
 )
 {
-	fun copyTo (dst:ByteCol)
+	fun copyTo (dst: ByteCol)
 	{
 		dst.r = r
 		dst.g = g
@@ -234,7 +236,7 @@ fun sampleShortColV2ShortColV(sample:Array<ShortCol>, dest:Array<ShortCol>, osaN
  * Take colour <bron>, and apply it to <doel> using the alpha value of
  * <bron>.
  */
-fun addAlphaOverShort (doel:ShortCol, bron:ShortCol)
+fun addAlphaOverShort (doel: ShortCol, bron: ShortCol)
 {
 	if (doel.a.toUInt()==0u || bron.a>=0xFFF0u)
 	{
@@ -257,7 +259,7 @@ fun addAlphaOverShort (doel:ShortCol, bron:ShortCol)
  *
  * vult bron onder doel in met alpha van doel
  */
-fun addAlphaUnderShort(doel:ShortCol, bron:ShortCol)
+fun addAlphaUnderShort(doel: ShortCol, bron: ShortCol)
 {
 
 	if(doel.a >= 0xFFF0u)
@@ -283,7 +285,7 @@ fun addAlphaUnderShort(doel:ShortCol, bron:ShortCol)
 /**
  * Alpha-over blending for floats.
  */
-fun addAlphaOverFloat (dest:FloatCol, source:FloatCol)
+fun addAlphaOverFloat (dest: FloatCol, source: FloatCol)
 {
 	/* d = s + (1-alpha_s)d*/
 
@@ -312,7 +314,7 @@ fun addAlphaOverFloat (dest:FloatCol, source:FloatCol)
 /**
  * Alpha-under blending for floats.
  */
-fun addAlphaUnderFloat(dest:FloatCol, source:FloatCol)
+fun addAlphaUnderFloat(dest: FloatCol, source: FloatCol)
 {
 	/* I may want to disable this clipping */
 	if (RE_FLOAT_COLOUR_CLIPPING)
@@ -340,7 +342,7 @@ fun addAlphaUnderFloat(dest:FloatCol, source:FloatCol)
 /**
  * Write a 16-bit-colour colour vector to a 8-bit-colour colour vector.
  */
-fun cpShortColV2CharColV (source:ShortCol, dest:ByteCol)
+fun cpShortColV2CharColV (source: ShortCol, dest: ByteCol)
 {
 	dest.r = (source.r.toUInt() shr 8).toUByte()
 	dest.g = (source.g.toUInt() shr 8).toUByte()
@@ -351,7 +353,7 @@ fun cpShortColV2CharColV (source:ShortCol, dest:ByteCol)
 /**
  * Write a 8-bit-colour colour vector to a 16-bit-colour colour vector.
  */
-fun cpCharColV2ShortColV(source:ByteCol, dest:ShortCol)
+fun cpCharColV2ShortColV(source: ByteCol, dest: ShortCol)
 {
 	dest.r = (source.r.toUInt() shl 8).toUShort()
 	dest.g = (source.g.toUInt() shl 8).toUShort()
@@ -362,7 +364,7 @@ fun cpCharColV2ShortColV(source:ByteCol, dest:ShortCol)
 /**
  * Write a 32-bit-colour colour vector to a 8-bit-colour colour vector.
  */
-fun cpIntColV2CharColV(source:IntCol, dest:ByteCol)
+fun cpIntColV2CharColV(source: IntCol, dest: ByteCol)
 {
 	dest.r = (source.r shr 24).toUByte()
 	dest.g = (source.g shr 24).toUByte()
@@ -374,7 +376,7 @@ fun cpIntColV2CharColV(source:IntCol, dest:ByteCol)
  * Write a floating-point-colour colour vector to a 8-bit-colour colour
  * vector. Clip colours to [0, 1].
  */
-fun cpFloatColV2CharColV (source:FloatCol, dest:ByteCol)
+fun cpFloatColV2CharColV (source: FloatCol, dest: ByteCol)
 {
 	// can't this be done more efficient? hope the conversions are correct...
 
@@ -402,7 +404,7 @@ fun cpFloatColV2CharColV (source:FloatCol, dest:ByteCol)
 /**
  * Cpoy a 8-bit-colour vector to floating point colour vector.
  */
-fun cpCharColV2FloatColV (source:ByteCol, dest:FloatCol)
+fun cpCharColV2FloatColV (source: ByteCol, dest: FloatCol)
 {
 	dest.r = (source.r.toFloat() / 255f)
 	dest.g = (source.g.toFloat() / 255f)
@@ -413,7 +415,7 @@ fun cpCharColV2FloatColV (source:ByteCol, dest:FloatCol)
 /**
  * Cpoy a 16-bit-colour vector to floating point colour vector.
  */
-fun cpShortColV2FloatColV (source:ShortCol, dest:FloatCol)
+fun cpShortColV2FloatColV (source: ShortCol, dest: FloatCol)
 {
 	dest.r = source.r.toFloat() / 65535f
 	dest.g = source.g.toFloat() / 65535f
@@ -424,7 +426,7 @@ fun cpShortColV2FloatColV (source:ShortCol, dest:FloatCol)
 /**
  * Copy a float-colour colour vector.
  */
-fun cpFloatColV(source:FloatCol, dest:FloatCol)
+fun cpFloatColV(source: FloatCol, dest: FloatCol)
 {
 	source.copyTo(dest)
 }
@@ -433,7 +435,7 @@ fun cpFloatColV(source:FloatCol, dest:FloatCol)
 /**
  * Copy a 16-bit-colour colour vector.
  */
-fun cpShortColV(source:ShortCol, dest:ShortCol)
+fun cpShortColV(source: ShortCol, dest: ShortCol)
 {
 	source.copyTo(dest)
 }
@@ -441,7 +443,7 @@ fun cpShortColV(source:ShortCol, dest:ShortCol)
 /**
  * Copy an 8-bit-colour colour vector.
  */
-fun cpCharColV (source:ByteCol, dest:ByteCol)
+fun cpCharColV (source: ByteCol, dest: ByteCol)
 {
 	source.copyTo(dest)
 }
@@ -453,7 +455,7 @@ fun cpCharColV (source:ByteCol, dest:ByteCol)
  * col(dest)   = (1 - alpha(source)*(1 - addfac)) * dest + source
  * alpha(dest) = alpha(source) + alpha (dest)
  */
-fun addalphaAddfacShort(doel:ShortCol, bron:ShortCol, addfac:UByte)
+fun addalphaAddfacShort(doel: ShortCol, bron: ShortCol, addfac:UByte)
 {
 
 	/* 1. copy bron straight away if doel has zero alpha */
@@ -479,7 +481,7 @@ fun addalphaAddfacShort(doel:ShortCol, bron:ShortCol, addfac:UByte)
 /**
 	Same for floats
 */
-fun addalphaAddfacFloat(dest:FloatCol, source:FloatCol, addfac:UByte)
+fun addalphaAddfacFloat(dest: FloatCol, source: FloatCol, addfac:UByte)
 {
 	var c = 0f // intermediate colour
 
@@ -518,7 +520,7 @@ fun addalphaAddfacFloat(dest:FloatCol, source:FloatCol, addfac:UByte)
  * col(dest)   = s + (1 - alpha(s))d
  * alpha(dest) = alpha(s) + (1 - alpha(s))alpha (d)
  */
-fun addHaloToHaloShort (d:ShortCol, s:ShortCol)
+fun addHaloToHaloShort (d: ShortCol, s: ShortCol)
 {
 	/*  float m; */ /* weiging factor of destination */
 
