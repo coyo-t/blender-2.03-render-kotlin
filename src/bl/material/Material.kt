@@ -1,4 +1,7 @@
-package bl
+package bl.material
+
+import bl.MTex
+import java.util.*
 
 class Material
 {
@@ -6,27 +9,27 @@ class Material
 
 	// lay: voor dynamics
 	var colormodel = 0
-	var lay = 0
-	var r = 0f
-	var g = 0f
-	var b = 0f
-	var specr = 0f
-	var specg = 0f
-	var specb = 0f
-	var mirr = 0f
-	var mirg = 0f
-	var mirb = 0f
+	var lay = 1
+	var r = 0.8f
+	var g = 0.8f
+	var b = 0.8f
+	var specr = 1f
+	var specg = 1f
+	var specb = 1f
+	var mirr = 1f
+	var mirg = 1f
+	var mirb = 1f
 	var ambr = 0f
 	var ambb = 0f
 	var ambg = 0f
 
-	var amb = 0f
+	var amb = 0.5f
 	var emit = 0f
 	var ang = 0f
 	var spectra = 0f
-	var alpha = 0f
-	var ref = 0f
-	var spec = 0f
+	var alpha = 1f
+	var ref = 0.8f
+	var spec = 0.5f
 	var zoffs = 0f
 	var add = 0f
 	var kfac = 0f // for transparent solids
@@ -34,15 +37,22 @@ class Material
 	var seed1 = 0
 	var seed2 = 0
 
-	var mode = 0
+	var mode = EnumSet.of(
+		MaterialMode.Traceable,
+		MaterialMode.Shadow,
+	)
 	var mode2 = 0 // even more material settings :)
-	var flarec = 0
-	var starc = 0
-	var linec = 0
-	var ringc = 0;
-	var hasize = 0f
-	var flaresize = 0f
-	var subsize = 0f
+	var flarec = 1
+	var starc = 4
+	var linec = 12
+	var ringc = 4
+
+	// haloSize
+	var hasize = 0.5f
+
+
+	var flaresize = 1f
+	var subsize = 1f
 	var flareboost = 0f
 
 	// onderstaand is voor buttons en render

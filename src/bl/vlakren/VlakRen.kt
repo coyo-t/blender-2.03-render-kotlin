@@ -1,6 +1,8 @@
 package bl.vlakren
 
 import bl.*
+import bl.material.Material
+import bl.maths.Vec3
 import java.util.*
 import kotlin.math.absoluteValue
 
@@ -10,7 +12,7 @@ class VlakRen
 	var v2: VertRen? = null
 	var v3: VertRen? = null
 	var v4: VertRen? = null
-	val n = Vec3f()
+	val n = Vec3()
 	var len = 0f
 	var mat: Material? = null
 	var mface: MFace? = null

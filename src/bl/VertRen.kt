@@ -1,9 +1,11 @@
 package bl
 
+import bl.maths.Vec3
+
 class VertRen
 {
-	val co = Vec3f()
-	val n = Vec3f()
+	val co = Vec3()
+	val n = Vec3()
 	val ho = f4array()
 	var orco:FloatArray? = null
 	var sticky:FloatArray? = null

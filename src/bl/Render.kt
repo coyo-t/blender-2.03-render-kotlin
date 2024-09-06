@@ -1,19 +1,21 @@
 package bl
 
+import bl.material.Material
+import bl.maths.Vec3
 import bl.vlakren.VlakRen
 
 class Render
 {
-	val co = Vec3f()
+	val co = Vec3()
 
-	val lo = Vec3f()
-	val gl = Vec3f()
-	val uv = Vec3f()
-	val ref = Vec3f()
-	val orn = Vec3f()
-	val winco = Vec3f()
-	val sticky = Vec3f()
-	val vcol = Vec3f()
+	val lo = Vec3()
+	val gl = Vec3()
+	val uv = Vec3()
+	val ref = Vec3()
+	val orn = Vec3()
+	val winco = Vec3()
+	val sticky = Vec3()
+	val vcol = Vec3()
 
 	var itot = 0f
 	var i = 0f
@@ -21,12 +23,12 @@ class Render
 	var rgb = 0f
 	var norm = 0f
 
-	val vn = Vec3f()
-	val view = Vec3f()
-	var vno: Vec3f? = null
+	val vn = Vec3()
+	val view = Vec3()
+	var vno: Vec3? = null
 	val refcol = f4array()
 
-	val grvec = Vec3f()
+	val grvec = Vec3()
 	var inprz = 0f
 	var inprh = 0f
 

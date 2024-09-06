@@ -1,5 +1,7 @@
 package bl
 
+import bl.maths.Vec3
+
 class MTex {
 
 	var texco = 0
@@ -13,8 +15,8 @@ class MTex {
 	var projy = 0
 	var projz = 0
 	var mapping = 0
-	val ofs = Vec3f()
-	val size = Vec3f()
+	val ofs = Vec3()
+	val size = Vec3()
 
 	var texflag = 0
 	var colormodel = 0

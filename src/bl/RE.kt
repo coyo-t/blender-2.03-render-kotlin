@@ -1,9 +1,13 @@
 package bl
 
+// afbreek: abort
+
 class RE
 {
 
 	var activeCamera: Camera? = null
+
+	var R = Render()
 
 	fun initRender ()
 	{
@@ -14,10 +18,6 @@ class RE
 	}
 
 	fun animRender ()
-	{
-	}
-
-	fun endTimer (real:Int?, cpu:Int?)
 	{
 	}
 
@@ -39,8 +39,6 @@ class RE
 		{
 			return
 		}
-
-
 	}
 
 	fun initFilterMask ()
@@ -68,10 +66,6 @@ class RE
 	}
 
 	fun screenDump ()
-	{
-	}
-
-	fun startTimer ()
 	{
 	}
 
