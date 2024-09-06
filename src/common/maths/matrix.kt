@@ -3,6 +3,30 @@ package common.maths
 import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 
+private fun Normalise (n:FloatArray):Float
+{
+	val d = n[0] * n[0] + n[1] * n[1] + n[2] * n[2]
+
+	// FLT_EPSILON is too large! A larger value causes normalise
+	// errors in a scaled down utah teapot
+	if (d > 0.0000000000001)
+	{
+		val fd = sqrt(d)
+
+		n[0] /= fd
+		n[1] /= fd
+		n[2] /= fd
+		return fd
+	}
+	else
+	{
+		n[2] = 0f
+		n[1] = 0f
+		n[0] = 0f
+		return 0f
+	}
+}
+
 class Matrix3
 {
 
@@ -20,6 +44,15 @@ class Matrix3
 			}
 		}
 	}
+
+	fun normalize012 ()
+	{
+		Normalise(this[0])
+		Normalise(this[1])
+		Normalise(this[2])
+	}
+
+
 
 }
 
@@ -207,30 +240,6 @@ fun MTC_Mat3MulMat3 (m1: Matrix3, m3: Matrix3, m2: Matrix3)
 
 fun MTC_Mat4Ortho (mat: Matrix4)
 {
-	fun Normalise (n:FloatArray):Float
-	{
-		val d = n[0] * n[0] + n[1] * n[1] + n[2] * n[2]
-
-		// FLT_EPSILON is too large! A larger value causes normalise
-		// errors in a scaled down utah teapot
-		if (d > 0.0000000000001)
-		{
-			val fd = sqrt(d)
-
-			n[0] /= fd
-			n[1] /= fd
-			n[2] /= fd
-			return fd
-		}
-		else
-		{
-			n[2] = 0f
-			n[1] = 0f
-			n[0] = 0f
-			return 0f
-		}
-	}
-
 	var len = Normalise(mat[0])
 	if(len!=0f) mat[0][3]/= len
 	len=Normalise(mat[1])

@@ -1,5 +1,6 @@
 package bl
 
+import scene.LampNode
 import kotlin.math.max
 import kotlin.math.min
 
@@ -86,10 +87,12 @@ class RE
 		}
 
 		// voor border
+		// for border
 		var xparts = R.r.xparts
 		var yparts = R.r.yparts
 
 		// array leegmaken
+		// clear array
 		for (nr in 0..<R.r.partCount)
 		{
 			allparts[nr][0] = -1
@@ -101,6 +104,7 @@ class RE
 		if (borderMode)
 		{
 			// zoveel parts in border
+			// "So many parts in border"??
 			xparts = min(xparts, (xmaxb-xminb-1)/xpart+1)
 			yparts = min(yparts, (ymaxb-yminb-1)/ypart+1)
 
@@ -134,6 +138,54 @@ class RE
 				if (p[3] - p[1] <= 0) p[0] = -1
 			}
 		}
+	}
+
+	// return 0 (false) als geen goede part
+	// return false if its a bad part
+	fun setpart (nr: Int): Boolean
+	{
+		val pr = allparts[nr]
+		if (pr[0] == -1)
+			return false
+
+		R.xstart = pr[0] - R.afmx
+		R.ystart = pr[1] - R.afmy
+		R.xend = pr[2] - R.afmx
+		R.yend = pr[3] - R.afmy
+		R.rectx = R.xend - R.xstart
+		R.recty = R.yend - R.ystart
+
+		return true
+	}
+
+	// TODO: has this been ported correctly?
+	fun addparttorect (nr:Int, part:RenderPart)
+	{
+		// de juiste offset in rectot
+		val pr = allparts[nr]
+		val rectx = R.rectx
+		var rt = pr[1] * rectx + pr[0]
+		val prect = part.rect
+		var rp = 0
+		val len = pr[2]- pr[0]
+		val heigth = pr[3]- pr[1]
+
+		for (y in 0..<heigth)
+		{
+			prect.copyInto(R.rectot!!, rt, 0, len)
+			rt += rectx
+			rp += len
+		}
+	}
+
+	fun addLamp (lamp:LampNode)
+	{
+		val lar = LampRen()
+		R.la += lar
+
+
+
+
 	}
 
 }

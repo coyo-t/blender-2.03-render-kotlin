@@ -27,6 +27,22 @@ class Vec3
 		}
 	}
 
+	fun setCo (source:Vec3)
+	{
+		x = source.x
+		y = source.y
+		z = source.z
+	}
+
+	fun setCo (source:Array<out Number>, startIndex:Int=0)
+	{
+		x = source[startIndex].toFloat()
+		y = source[startIndex+1].toFloat()
+		z = source[startIndex+2].toFloat()
+	}
+
+
+
 	fun normalize ():Float
 	{
 		var d = x * x + y * y + z * z

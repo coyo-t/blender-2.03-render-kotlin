@@ -2,10 +2,7 @@ package scene
 
 import common.maths.Vec3
 
-class Lamp
+open class Node
 {
-
 	val co = Vec3()
-
-
 }
