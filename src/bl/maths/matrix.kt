@@ -61,57 +61,6 @@ fun MTC_Mat4CpyMat4 (from:Matrix4, to:Matrix4)
 	}
 }
 
-
-fun MTC_Mat4MulSerie (
-	answ:Matrix4,
-	m1:Matrix4?=null, m2:Matrix4?=null, m3:Matrix4?=null,
-	m4:Matrix4?=null, m5:Matrix4?=null, m6:Matrix4?=null,
-	m7:Matrix4?=null, m8:Matrix4?=null)
-{
-	if(m1==null || m2==null)
-		return
-
-	val temp = Matrix4()
-
-	MTC_Mat4MulMat4(answ, m2, m1)
-	if (m3 != null)
-	{
-		MTC_Mat4MulMat4(temp, m3, answ)
-		if (m4 != null)
-		{
-			MTC_Mat4MulMat4(answ, m4, temp)
-			if (m5 != null)
-			{
-				MTC_Mat4MulMat4(temp, m5, answ)
-				if (m6 != null)
-				{
-					MTC_Mat4MulMat4(answ, m6, temp)
-					if (m7 != null)
-					{
-						MTC_Mat4MulMat4(temp, m7, answ)
-						if (m8 != null)
-						{
-							MTC_Mat4MulMat4(answ, m8, temp)
-						}
-						else
-						{
-							MTC_Mat4CpyMat4(answ, temp)
-						}
-					}
-				}
-				else
-				{
-					MTC_Mat4CpyMat4(answ, temp)
-				}
-			}
-		}
-		else
-		{
-			MTC_Mat4CpyMat4(answ, temp)
-		}
-	}
-}
-
 fun MTC_Mat4MulMat4 (m1:Matrix4, m2:Matrix4, m3:Matrix4)
 {
 	// matrix product: c[j][k] = a[j][i].b[i][k]
@@ -137,7 +86,6 @@ fun MTC_Mat4MulMat4 (m1:Matrix4, m2:Matrix4, m3:Matrix4)
 	m1[3][3] = m2[3][0]*m3[0][3] + m2[3][1]*m3[1][3] + m2[3][2]*m3[2][3] + m2[3][3]*m3[3][3];
 
 }
-
 
 fun MTC_Mat4MulVecfl (mat:Matrix4, vec:Vec3)
 {

@@ -1,6 +1,6 @@
 package bl.envmap
 
-import bl.mat4x4f
+import bl.maths.mat4x4f
 
 class EnvMap {
 	var `object`: Any? = null

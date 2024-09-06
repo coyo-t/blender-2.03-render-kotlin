@@ -2,6 +2,9 @@ package bl
 
 import bl.material.Material
 import bl.maths.Vec3
+import bl.maths.f4array
+import bl.maths.mat3x3f
+import bl.maths.mat4x4f
 import bl.vlakren.VlakRen
 
 class Render
@@ -77,10 +80,10 @@ class Render
 
 	val mat = mutableListOf<Material>()
 	val matren = mutableListOf<Material>()
-
-//	VlakRen **blovl;
-//	bl.VertRen **blove;
-//	HaloRen **bloha;
+	val la = mutableListOf<LampRen>()
+	val blovl = mutableListOf<VlakRen>()
+	val blove = mutableListOf<VertRen>()
+	val bloha = mutableListOf<HaloRen>()
 
 	var rectaccu: UIntArray? = null
 	//* z buffer: distance buffer
@@ -106,4 +109,6 @@ class Render
 	var sparex = 0
 	var sparey = 0
 
+	var backbuf:Image? = null
+	var frontbuf:Image? = null
 }
