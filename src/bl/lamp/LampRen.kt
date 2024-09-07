@@ -1,5 +1,6 @@
-package bl
+package bl.lamp
 
+import bl.ShadBuf
 import common.maths.Matrix3
 import common.maths.Vec3
 
@@ -11,8 +12,8 @@ class LampRen
 	var dist = 0f
 
 	val co = Vec3()
-	var type = 0
-	val mode = LampMode()
+	var type = LampType.Local
+	val mode = LampFlags()
 	var r = 0f
 	var g = 0f
 	var b = 0f
@@ -30,7 +31,7 @@ class LampRen
 	var halo = 0f
 	var ld1 = 0f
 	var ld2 = 0f
-	var shb:ShadBuf? = null
+	var shb: ShadBuf? = null
 	val imat = Matrix3()
 	var spottexfac = 0f
 
@@ -38,6 +39,6 @@ class LampRen
 	val sh_invcampos = Vec3()
 	var sh_zfac = 0f
 
-	var org:LampRen? = null
+	var org: LampRen? = null
 //	MTex *mtex[8];
 }

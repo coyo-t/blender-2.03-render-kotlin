@@ -1,6 +1,6 @@
-package bl
+package bl.lamp
 
-data class LampMode(
+data class LampFlags(
 	var shadow:Boolean=false,
 	var halo:Boolean=false,
 	var layer:Boolean=false,

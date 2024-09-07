@@ -1,5 +1,6 @@
 package bl
 
+import bl.lamp.LampRen
 import scene.LampNode
 import kotlin.math.max
 import kotlin.math.min

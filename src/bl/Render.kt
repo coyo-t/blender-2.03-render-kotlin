@@ -1,5 +1,6 @@
 package bl
 
+import bl.lamp.LampRen
 import bl.material.Material
 import common.maths.Vec3
 import common.maths.f4array
